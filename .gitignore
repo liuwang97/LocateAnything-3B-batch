@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# uv
+uv.lock
+
+# Tooling / caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Hugging Face model cache (in case anyone points HF_HOME into the tree)
+.cache/
+hf_cache/
+
+# Example outputs
+**/locate_out/
+*_box.png
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
