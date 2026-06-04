@@ -23,6 +23,12 @@ dependencies = [
 
 [project.optional-dependencies]
 example = ["opencv-python>=4.11"]   # only examples/locate_objects.py needs cv2 for drawing boxes
+# OPTIONAL but STRONGLY recommended on a supported GPU: enables MoonViT's varlen flash path for the
+# batched vision encode. Without it the engine auto-falls-back to a per-image encode and runs
+# ~30% slower end-to-end (see README "Hardware notes"). NOTE: PyPI has no prebuilt wheel for newer
+# stacks (e.g. sm_120 / cu128 / torch 2.11) -- `pip install .[flash]` would build from source there;
+# install a matching prebuilt wheel instead, e.g. flash-attn==2.8.3+cu128torch2.11 --no-build-isolation.
+flash = ["flash-attn>=2.0"]
 
 [project.urls]
 Homepage = "https://github.com/liuwang97/LocateAnything-3B-batch"

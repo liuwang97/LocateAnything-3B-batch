@@ -61,7 +61,17 @@ pip install torch --index-url https://download.pytorch.org/whl/cu124
 # 2) then this package
 pip install locateanything-batch              # or:  pip install -e .   (from a clone)
 pip install "locateanything-batch[example]"   # adds opencv for the drawing example
+pip install "locateanything-batch[flash]"     # vision flash kernel — see the speed warning below
 ```
+
+> **⚠️ Install `flash-attn` for full speed.** Without a working `flash-attn`, the batched vision
+> encode falls back to a per-image path and the engine runs **~30% slower end-to-end**. It is still
+> *optional* (everything works without it, results are bit-identical), but on a supported GPU you
+> really want it. PyPI has **no** prebuilt wheel for newer stacks (e.g. sm_120 / cu128 / torch 2.11),
+> so `[flash]` would compile from source there — install a matching **prebuilt** wheel instead:
+> ```bash
+> pip install flash-attn==2.8.3+cu128torch2.11 --no-build-isolation   # example for RTX 50-series / cu128
+> ```
 
 > The model download happens lazily on the first `load()`. To pre-stage it offline, download
 > `nvidia/LocateAnything-3B` into your HF cache once, then run with `HF_HUB_OFFLINE=1`.
@@ -194,10 +204,13 @@ python examples/bench_equivalence.py ./photos "a dog" "a cat"
 - **Decode is sdpa-only.** The MTP generation window is *bidirectional* (the mask zeroes the
   `[-block:, -block:]` corner), which the causal-only flash kernel cannot express. The model was
   designed to run that window on a specialized flex-attention kernel that isn't available on sm_120.
-- **flash-attn is optional and only helps vision.** When a `flash-attn` wheel is installed, MoonViT's
-  varlen path lets the cross-image vision batch be block-diagonal (exact + faster). On GPUs where
-  flash isn't available (e.g. sm_120 / RTX 50-series at time of writing), the engine auto-detects this
-  and falls back to a per-image vision encode — everything still works, just without that speedup.
+- **flash-attn is optional but worth ~30% end-to-end.** When a `flash-attn` wheel is installed,
+  MoonViT's varlen path lets the cross-image vision batch be block-diagonal (exact + faster). Without
+  it the engine auto-detects the absence and falls back to a per-image vision encode — everything
+  still works and stays bit-identical, but the whole pipeline runs **~30% slower**. A prebuilt wheel
+  *does* exist for sm_120 / RTX 50-series (e.g. `flash-attn==2.8.3+cu128torch2.11`); install it with
+  `--no-build-isolation` (it is not on PyPI, so a plain source build is the only other route). This
+  only affects the vision encode — decode stays sdpa either way (see the first note).
 - **Warnings.** transformers may print flash/attention fallback warnings on load. The engine does not
   silence them globally (it's a library); filter them in your own process if you prefer quiet output.
 
