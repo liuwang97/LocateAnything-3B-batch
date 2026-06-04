@@ -120,7 +120,7 @@ All are read at import time. Defaults are good; override only to A/B or debug.
 | `MTP_BATCH_PREFILL` | `1` | One batched shared-prefix prefill instead of per-image |
 | `MTP_BATCH_SAN` | `1` | Run the logits/sample pipeline once over `[B,6,V]` instead of per row |
 | `MTP_BATCH_BOXDECODE` | `1` | Fully-GPU batched box decode (one host transfer per step instead of ~6 per row) |
-| `MTP_FLASH_PREFILL` | `0` | Use flash attention for *prefill* (decode always stays sdpa). Measured slower than sdpa on sm_120 |
+| `MTP_FLASH_PREFILL` | `1` | Flash attention for *prefill* (decode always stays sdpa). Faster than sdpa on sm_120 with the batched prefill; needs `flash-attn` (auto-falls back to sdpa without it). Set `0` to force sdpa |
 | `MTP_COMPILE` | `0` | `torch.compile` the shared Qwen2 core (needs `triton`; ~42 s warm / ~187 s cold to compile, ~1.14× after) |
 
 ## Benchmarks & equivalence
@@ -209,8 +209,9 @@ python examples/bench_equivalence.py ./photos "a dog" "a cat"
   it the engine auto-detects the absence and falls back to a per-image vision encode — everything
   still works and stays bit-identical, but the whole pipeline runs **~30% slower**. A prebuilt wheel
   *does* exist for sm_120 / RTX 50-series (e.g. `flash-attn==2.8.3+cu128torch2.11`); install it with
-  `--no-build-isolation` (it is not on PyPI, so a plain source build is the only other route). This
-  only affects the vision encode — decode stays sdpa either way (see the first note).
+  `--no-build-isolation` (it is not on PyPI, so a plain source build is the only other route). Flash
+  speeds the vision encode and, with the batched prefill, the LLM prefill too (`MTP_FLASH_PREFILL`,
+  on by default when the wheel is present) — only decode stays sdpa either way (see the first note).
 - **Warnings.** transformers may print flash/attention fallback warnings on load. The engine does not
   silence them globally (it's a library); filter them in your own process if you prefer quiet output.
 

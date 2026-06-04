@@ -41,7 +41,7 @@ API:
 Env knobs (all optional; defaults are sensible):
   LA3B_MODEL          HF repo id / local path of the model (default nvidia/LocateAnything-3B)
   HF_HUB_OFFLINE=1    read the local HF cache only (no network); unset -> download on first use
-  MTP_FLASH_PREFILL   1 -> use flash attention for prefill (decode stays sdpa; off by default)
+  MTP_FLASH_PREFILL   0 -> sdpa prefill (default 1: flash prefill when flash-attn present, faster on sm_120; decode stays sdpa)
   MTP_COMPILE         1 -> torch.compile the shared Qwen2 core (needs triton)
   MTP_BATCH_VISION    0 -> per-image vision encode (default 1: batched when flash is present)
   MTP_BATCH_PREFILL   0 -> per-image shared-prefix prefill (default 1: one batched prefill)
@@ -60,17 +60,30 @@ DEV, DT = "cuda", torch.bfloat16
 N_FUTURE = 6                                            # = config.block_size (MTP window)
 _PROMPT = "Locate all the instances that matches the following description: "
 
-# LLM prefill on flash is IMPLEMENTED but DEFAULT OFF: measured SLOWER than sdpa on sm_120
-# (60.8/45.2 vs 33.0 ms/img -- short batch=1 prefills don't amortize flash's fixed overhead;
-# decode can't use flash at all since the MTP window is bidirectional). Set MTP_FLASH_PREFILL=1
-# to A/B it. Vision uses flash automatically when the wheel is installed (neutral, no win).
-USE_FLASH_PREFILL = os.environ.get("MTP_FLASH_PREFILL", "0") == "1"
+# LLM prefill on flash is DEFAULT ON: measured FASTER than sdpa on sm_120 now that prefill is
+# batched (the earlier batch=1 measurement had flash slower -- short prefills didn't amortize
+# flash's fixed overhead; the batched prefill does). Decode still can't use flash at all since the
+# MTP window is bidirectional. Set MTP_FLASH_PREFILL=0 to force sdpa prefill (or to A/B it).
+# Gated on the flash-attn wheel: without it the Qwen2FlashAttention2 prefill path can't run, so we
+# auto-fall back to sdpa prefill (mirrors the vision auto-fallback -- "works without flash" holds).
+_flash_prefill_req = os.environ.get("MTP_FLASH_PREFILL", "1") == "1"
+if _flash_prefill_req:
+    try:
+        import flash_attn  # noqa: F401  -- presence check; the prefill path needs the wheel
+        USE_FLASH_PREFILL = True
+    except Exception:
+        USE_FLASH_PREFILL = False
+        if "MTP_FLASH_PREFILL" in os.environ:        # explicit request -> say why it's off
+            warnings.warn("MTP_FLASH_PREFILL=1 but flash-attn is not importable; using sdpa prefill.")
+else:
+    USE_FLASH_PREFILL = False
 
 # torch.compile the shared Qwen2 core (base.forward, dynamic shapes; vision left EAGER since
 # compiling it is a net loss -- 11 graph breaks, opaque attention). MEASURED ~1.14x end-to-end on
 # the two-prompt workload (modest: the per-row python box decode -- the real bottleneck -- is
 # untouched), and it costs ~42s warm / ~187s cold to compile. Opt-in; needs triton (pip install triton).
-# Leave USE_FLASH_PREFILL OFF when compiling (the per-call attn-class swap would force recompiles).
+# Set MTP_FLASH_PREFILL=0 when compiling (flash prefill is on by default, and the per-call
+# attn-class swap would force recompiles).
 MTP_COMPILE = os.environ.get("MTP_COMPILE", "0") == "1"
 
 # Batch the MoonViT vision encode across a micro-batch's images: pack N images into ONE
@@ -363,8 +376,8 @@ def _encode_images(ims):
     max|per-image - batched| = 0.00e+00, VRAM 7.87->8.20GB across gper 1->32). Without flash,
     sdpa packs into a dense [1,S,S] mask -> O(S^2) N^2 -> per-image fallback. MTP_BATCH_VISION=0
     forces per-image. Preprocessing (_preproc_one) stays per-image -- the proven win is the GPU
-    encode only; flash EARNS ITS KEEP here (not on the LLM, where prefill flash is slower and
-    decode's bidirectional MTP window can't use it -- see _set_llm_mode / USE_FLASH_PREFILL)."""
+    encode only. Flash also helps the LLM prefill now (default on; see USE_FLASH_PREFILL), though
+    decode's bidirectional MTP window still can't use it -- see _set_llm_mode."""
     tok, proc, model = load()
     pvs, grids = [], []
     for im in ims:
