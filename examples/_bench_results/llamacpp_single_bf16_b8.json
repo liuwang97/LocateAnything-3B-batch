@@ -1,0 +1,99 @@
+{
+  "track": "llamacpp-windows-native",
+  "mode": "batch-8 continuous batching (-np 8)",
+  "model": "LocateAnything-3B",
+  "decoding": "autoregressive (no MTP)",
+  "quant": "BF16 (non-quantized) + BF16 mmproj",
+  "query": "rectangle",
+  "summary": {
+    "batch": 8,
+    "decode_n_forced": 128,
+    "B_E2E_img_per_s": 2.612495015025761,
+    "B_E2E_ms_per_img": 382.7758500010532,
+    "B_wall_s": 3.0622068000084255,
+    "B_total_gen_tokens": 74,
+    "B_req_latency_ms_mean": 2961.7572499992093,
+    "B_sample_text": "<ref>Qwen</ref><box><116><181><460><678></box><|im_end|>",
+    "A_E2E_img_per_s": 1.8602908978738686,
+    "A_wall_s": 4.300402699998813,
+    "A_total_gen_tokens": 1024,
+    "A_aggregate_decode_tok_s": 238.11723492785518,
+    "A_req_latency_ms_mean": 4282.871962495847,
+    "A_req_latency_ms_p50": 4287.748599977931,
+    "A_req_latency_ms_p99": 4298.374700010754
+  },
+  "per_request_A": [
+    {
+      "wall_ms": 4288.0154000013135,
+      "gen_n": 128,
+      "gen_ms": 1818.544,
+      "gen_tok_s": 70.3859791129607,
+      "prompt_n": 1034,
+      "prompt_ms": 2431.837,
+      "text": "<ref>Qwen</ref><box><116><181><460><678></box><ref>created by</ref><box><116><181><460><678></box><box>Aibaba Cloud</ref><box><116><181><460><678></box><ref>Qwen</ref><box><116><181><460><678></box><ref>created by</ref><box><116><181><460><678></box><ref>Aibaba Cloud</ref><box><116><181><460><678></box><ref>Qwen</ref><box><116><181><460><678></box><ref>created by</ref><box><116><181><460><678></box><ref>Aibaba Cloud</ref><box><116><181><460><678></box><ref>Qwen</ref><box><116><181><460><678></box><ref>created by</ref><box><116><181><460><678></box><ref>Aibaba Cloud</ref><box><116><181><460><678></box><ref>Qwen</ref>"
+    },
+    {
+      "wall_ms": 4288.1550999882165,
+      "gen_n": 128,
+      "gen_ms": 1818.646,
+      "gen_tok_s": 70.38203146736639,
+      "prompt_n": 1034,
+      "prompt_ms": 2431.809,
+      "text": "<ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546><129><860><470></box><ref>200px</ref><box><546>"
+    },
+    {
+      "wall_ms": 4264.22559999628,
+      "gen_n": 128,
+      "gen_ms": 3467.065,
+      "gen_tok_s": 36.91883480696208,
+      "prompt_n": 1034,
+      "prompt_ms": 772.556,
+      "text": "<ref>Qwen</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>Qwen</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>Qwen</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>Qwen</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>Qwen</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>Qwen</ref><box><314><494><684><899></box><ref>by</ref><box><314><494><684><899></box><ref>Qwen</ref><box>"
+    },
+    {
+      "wall_ms": 4263.698199996725,
+      "gen_n": 128,
+      "gen_ms": 3466.902,
+      "gen_tok_s": 36.920570584343025,
+      "prompt_n": 1034,
+      "prompt_ms": 772.897,
+      "text": "<ref>orange</ref><box><683><546><939><913></box><ref>Qwen</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>-</ref><box><683><546><939><913></box><ref>"
+    },
+    {
+      "wall_ms": 4287.748599977931,
+      "gen_n": 128,
+      "gen_ms": 1818.488,
+      "gen_tok_s": 70.38814663610648,
+      "prompt_n": 1034,
+      "prompt_ms": 2432.012,
+      "text": "<ref>Qwen</ref><box>None</box><ref>created by</ref><box>None</box><ref>Alibaba Cloud</ref><box>None</box><ref>You</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>None</box><ref>you</ref><box>"
+    },
+    {
+      "wall_ms": 4286.572499986505,
+      "gen_n": 128,
+      "gen_ms": 1818.313,
+      "gen_tok_s": 70.39492100644938,
+      "prompt_n": 1034,
+      "prompt_ms": 2431.852,
+      "text": "<ref>Qwen</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>4</ref><box><0><0><1000><1000></box><ref>"
+    },
+    {
+      "wall_ms": 4286.185600009048,
+      "gen_n": 128,
+      "gen_ms": 1818.185,
+      "gen_tok_s": 70.39987680021561,
+      "prompt_n": 1034,
+      "prompt_ms": 2431.891,
+      "text": "<ref>Qwen</ref><box><586><78><880><392></box><ref>by</ref><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392><880><392></box><ref><null><box><586><392>"
+    },
+    {
+      "wall_ms": 4298.374700010754,
+      "gen_n": 128,
+      "gen_ms": 1465.262,
+      "gen_tok_s": 87.35639087071118,
+      "prompt_n": 1034,
+      "prompt_ms": 2742.612,
+      "text": "<ref>Qwen</ref><box><195><391><547><860></box><ref>created by</ref><box><195><266><259><285></box><ref>Alibaba Cloud</ref><box><259><266><340><285></box><ref>you</ref><box><341><266><366><285></box><ref>you</ref><box><366><266><391><285></box><ref>you</ref><box><391><266><418><285></box><ref>you</ref><box><418><266><445><285></box><ref>you</ref><box><445><266><473><285></box><ref>you</ref><box><473><266><496><285></box><ref>you</ref><box><496><266><521><285></box><ref>you</ref><box><521><266><543><285></box><ref>you</ref><box><543><266><569><285></box><ref>you</ref><box><569><266><596><285></box><ref>you</ref><box><596><266><624>"
+    }
+  ]
+}

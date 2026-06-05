@@ -20,6 +20,44 @@ img = load_pil("photo.jpg")
 print(answer)   # ... <box><312><144><688><902></box> ...
 ```
 
+## Benchmark — MTP vs the community AR ports
+
+End-to-end grounding throughput on one **RTX 5070 Ti (16 GB)** — single clean detection
+per image, greedy, **batch 8**, precision-matched. Reproduce the MTP row with
+[`examples/benchmark.py`](examples/benchmark.py); full method + raw data + the AR-port
+harnesses are in [`examples/_bench_results/COMPARISON.md`](examples/_bench_results/COMPARISON.md).
+
+| Implementation | decode | precision | **img/s** | ms/img |
+|---|---|---|---:|---:|
+| **`locateanything-batch` (this repo)** | **fast-MTP + batched** | bf16 | **4.53** | **221** |
+| llama.cpp (`yuuko-eth` *mtmd-grounders*) | autoregressive | BF16 | 2.61 | 383 |
+| vLLM (`WuNein/LocateAnything-vLLM`) | autoregressive | fp16 | 1.02 | 977 |
+
+**~1.7× faster than llama.cpp, ~4.4× faster than vLLM**, end to end — and it's the only one
+that runs the model's *native* multi-token-prediction path. All three decode the **identical
+box**; the two community ports drop MTP and fall back to plain autoregression.
+
+### Why it's this fast
+
+For a short grounding output, **end-to-end time is dominated by vision-encode + prefill, not
+decode** — so the win is in batching the *front* of the pipeline, which the MTP loop here does
+and the AR ports don't:
+
+- **Batched vision encode** — all images packed into one MoonViT `extract_feature` (flash
+  varlen, block-diagonal): bit-identical to per-image but **2.6–3×**. The vLLM port instead runs
+  vision *client-side, serially per image* — that alone is **~82%** of its end-to-end time.
+- **Batched shared-prefix prefill** — the ~700-token image+instruction prefix is GPU-starved at
+  batch 1; one batched prefill is **~3.6×**.
+- **Multi-token (MTP) decode** — the model's own fast path emits a *whole box per accepted step*
+  (k∈{1,3,4,6}), not one token at a time. The community ports don't implement it.
+- **No per-row CPU syncs** — sampler + box decode run once over the whole `[B,6,V]` step on-GPU
+  (greedy bit-exact).
+
+> Quantization aside: llama.cpp's Q4_K_M is ~2× faster *single-stream decode* than BF16 (pure
+> memory bandwidth) — but that edge collapses under batching, doesn't move the prefill-bound E2E,
+> and degraded output quality on this model. The precision-matched **BF16** row above is the fair
+> comparison.
+
 ## Why
 
 | | stock `generate` | `locateanything-batch` |

@@ -1,0 +1,79 @@
+{
+  "track": "vllm-wsl-debian",
+  "mode": "SINGLE-DETECTION BATCH-8 E2E (vision-on-GPU INCLUDED, natural EOS)",
+  "model": "nvidia/LocateAnything-3B (WuNein vLLM AR port, prompt_embeds)",
+  "vllm_decoding": "auto-regressive (AR), no MTP",
+  "precision": "fp16 (vLLM --dtype half; vision encoder fp16)",
+  "prompt_template": "Detect the {query}.",
+  "query": "rectangle",
+  "images": "_benchimgs_single (one rectangle each)",
+  "server": {
+    "base_url": "http://127.0.0.1:8003/v1",
+    "served_model": "locate_qwen2_model",
+    "gpu_memory_utilization": 0.55,
+    "max_num_seqs": 8,
+    "prefix_caching": false,
+    "max_model_len": 8192,
+    "dtype": "half"
+  },
+  "vram_choice": "coexistence: vision encoder on GPU + vLLM (util in server block)",
+  "gpu_mem_after_embedder_load_mib": 15476,
+  "headline_batch8_e2e": {
+    "n_requests": 8,
+    "e2e_wall_s": 7.81912930999988,
+    "vision_encode_wall_s": 6.417053200999817,
+    "server_concurrent_wall_s": 1.402041367000038,
+    "vision_frac": 0.8206864148918794,
+    "server_frac": 0.17930914190240696,
+    "img_per_s": 1.0231318197754837,
+    "ms_per_image": 977.391163749985,
+    "total_gen_tokens": 80,
+    "total_prompt_tokens": 8528,
+    "mean_gen_tokens_per_req": 10.0,
+    "server_decode_tok_per_s": 57.05965735602852,
+    "per_request_server_latency_mean_s": 1.3537037266249285,
+    "per_request_server_latency_p50_s": 1.3716038959996695,
+    "per_request_server_latency_p99_s": 1.3896064539999315,
+    "finish_reasons": [
+      "stop"
+    ],
+    "gen_tokens_each": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "sample_outputs": [
+      "<ref>rectangle</ref><box><117><181><460><678></box>",
+      "<ref>rectangle</ref><box><546><129><860><470></box>",
+      "<ref>rectangle</ref><box><312><494><684><900></box>",
+      "<ref>rectangle</ref><box><684><546><938><913></box>",
+      "<ref>rectangle</ref><box><137><116><372><613></box>",
+      "<ref>rectangle</ref><box><420><286><743><704></box>",
+      "<ref>rectangle</ref><box><585><77><880><392></box>",
+      "<ref>rectangle</ref><box><195><390><547><860></box>"
+    ],
+    "gpu_mem_peak_mib_during_batch": 15709
+  },
+  "reference_batch1_e2e": {
+    "e2e_wall_s": 2.2933963939999558,
+    "vision_encode_wall_s": 1.2289206689997627,
+    "server_wall_s": 1.0644506040002852,
+    "img_per_s": 0.43603452181935337,
+    "ms_per_image": 2293.3963939999558,
+    "gen_tokens": 10,
+    "prompt_tokens": 1066,
+    "finish_reason": "stop",
+    "sample_text": "<ref>rectangle</ref><box><117><181><460><678></box>"
+  },
+  "supplementary_raw_decode_batch8": {
+    "wall_s": 1.8511233530002755,
+    "total_completion_tokens": 1024,
+    "aggregate_decode_tok_per_s": 553.1776141985972,
+    "note": "raw server decode capacity only (vision NOT included); not the headline"
+  }
+}

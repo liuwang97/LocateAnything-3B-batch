@@ -1,0 +1,13 @@
+{
+  "engine": "fast-MTP (multi-token) + batched, bf16",
+  "batch": 8,
+  "n_images": 32,
+  "query": "rectangle",
+  "wall_s": 7.025879499997245,
+  "ms_per_image": 219.5587343749139,
+  "images_per_s": 4.554589927141868,
+  "gen_tokens_total": 320,
+  "gen_tokens_per_image": 10.0,
+  "max_vram_gb": 9.162362368,
+  "sample_output": "<ref>rectangle</ref><box><117><181><460><678></box><|im_end|>"
+}

@@ -1,0 +1,39 @@
+{
+  "track": "mtp-windows-native (this repo, locateanything-batch)",
+  "model": "nvidia/LocateAnything-3B",
+  "decoding": "fast-MTP (multi-token prediction, accept k in {1,3,4,6}/step) + batched",
+  "dtype": "bfloat16",
+  "flash_attn": "vision encode + prefill (decode stays sdpa)",
+  "query": "rectangle",
+  "sample_output": "<ref>rectangle</ref><box><117><181><460><678></box><|im_end|>",
+  "max_vram_gb": 13.090778112,
+  "by_batch": [
+    {
+      "batch": 1,
+      "n_images": 32,
+      "wall_s": 10.439006000000518,
+      "ms_per_image": 326.2189375000162,
+      "images_per_s": 3.0654259610539945,
+      "total_gen_tokens": 320,
+      "effective_decode_tok_s": 30.654259610539942
+    },
+    {
+      "batch": 8,
+      "n_images": 32,
+      "wall_s": 7.05674739999813,
+      "ms_per_image": 220.52335624994157,
+      "images_per_s": 4.534667062053047,
+      "total_gen_tokens": 320,
+      "effective_decode_tok_s": 45.34667062053047
+    },
+    {
+      "batch": 32,
+      "n_images": 32,
+      "wall_s": 17.25163449998945,
+      "ms_per_image": 539.1135781246703,
+      "images_per_s": 1.854896705585756,
+      "total_gen_tokens": 320,
+      "effective_decode_tok_s": 18.54896705585756
+    }
+  ]
+}

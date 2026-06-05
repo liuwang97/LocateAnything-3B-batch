@@ -58,7 +58,8 @@ MODEL = os.environ.get("LA3B_MODEL", "nvidia/LocateAnything-3B")
 MAX_DIM, MNT = 1024, 384
 DEV, DT = "cuda", torch.bfloat16
 N_FUTURE = 6                                            # = config.block_size (MTP window)
-_PROMPT = "Locate all the instances that matches the following description: "
+_PROMPT = os.environ.get("LA_MTP_PROMPT",
+                         "Locate all the instances that matches the following description: ")
 
 # LLM prefill on flash is DEFAULT ON: measured FASTER than sdpa on sm_120 now that prefill is
 # batched (the earlier batch=1 measurement had flash slower -- short prefills didn't amortize

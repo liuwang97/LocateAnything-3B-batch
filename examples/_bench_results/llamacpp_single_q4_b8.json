@@ -1,0 +1,99 @@
+{
+  "track": "llamacpp-windows-native",
+  "mode": "batch-8 continuous batching (-np 8)",
+  "model": "LocateAnything-3B",
+  "decoding": "autoregressive (no MTP)",
+  "quant": "Q4_K_M (LLM) + BF16 mmproj",
+  "query": "rectangle",
+  "summary": {
+    "batch": 8,
+    "decode_n_forced": 128,
+    "B_E2E_img_per_s": 1.4301318300839154,
+    "B_E2E_ms_per_img": 699.2362375021912,
+    "B_wall_s": 5.59388990001753,
+    "B_total_gen_tokens": 599,
+    "B_req_latency_ms_mean": 3455.1194999949075,
+    "B_sample_text": "<ref>Qwen</ref><box><116><181><460><678></box><|im_end|>",
+    "A_E2E_img_per_s": 2.063248682025803,
+    "A_wall_s": 3.8773803999938536,
+    "A_total_gen_tokens": 1024,
+    "A_aggregate_decode_tok_s": 264.0958312993028,
+    "A_req_latency_ms_mean": 3866.5210624967585,
+    "A_req_latency_ms_p50": 3868.1478000071365,
+    "A_req_latency_ms_p99": 3874.696099985158
+  },
+  "per_request_A": [
+    {
+      "wall_ms": 3870.028600009391,
+      "gen_n": 128,
+      "gen_ms": 1637.837,
+      "gen_tok_s": 78.15185516018994,
+      "prompt_n": 1034,
+      "prompt_ms": 2191.952,
+      "text": "<ref>Qwen</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>Qwen</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box><ref>by</ref><box><116><181><460><678></box>"
+    },
+    {
+      "wall_ms": 3868.1478000071365,
+      "gen_n": 128,
+      "gen_ms": 1637.626,
+      "gen_tok_s": 78.16192463969185,
+      "prompt_n": 1034,
+      "prompt_ms": 2191.605,
+      "text": "<null><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box><546><129><860><470></box><box>"
+    },
+    {
+      "wall_ms": 3848.8246999913827,
+      "gen_n": 128,
+      "gen_ms": 3438.24,
+      "gen_tok_s": 37.22834938805901,
+      "prompt_n": 1034,
+      "prompt_ms": 383.439,
+      "text": "<ref>2021011015120020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "wall_ms": 3868.8007000018843,
+      "gen_n": 128,
+      "gen_ms": 1637.781,
+      "gen_tok_s": 78.15452737576025,
+      "prompt_n": 1034,
+      "prompt_ms": 2191.883,
+      "text": "<ref>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "wall_ms": 3867.6539000007324,
+      "gen_n": 128,
+      "gen_ms": 1637.532,
+      "gen_tok_s": 78.16641140447943,
+      "prompt_n": 1034,
+      "prompt_ms": 2191.828,
+      "text": "<ref>Qwen, created by Alibaba Cloud, you are a helpful assistant.</ref><box><135><116><372><614></box><ref>Qwen, created by Alibaba Cloud, you are a helpful assistant.</ref><box><135><116><372><614></box><ref>Qwen, created by Alibaba Cloud, you are a helpful assistant.</ref><box><135><116><372><614></box><ref>Qwen, created by Alibaba Cloud, you are a helpful assistant.</ref><box><135><116><372><614></box><ref>Qwen, created by Alibaba Cloud, you are a helpful assistant.</ref><box><135><116><372><614></box><ref>Qwen, created by Alibaba Cloud, you are a helpful assistant.</ref><box><135>"
+    },
+    {
+      "wall_ms": 3867.7937999891583,
+      "gen_n": 128,
+      "gen_ms": 1637.711,
+      "gen_tok_s": 78.15786790221229,
+      "prompt_n": 1034,
+      "prompt_ms": 2191.829,
+      "text": "<ref>2021011014520000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "wall_ms": 3866.222899989225,
+      "gen_n": 128,
+      "gen_ms": 1637.443,
+      "gen_tok_s": 78.17065998633235,
+      "prompt_n": 1034,
+      "prompt_ms": 2191.669,
+      "text": "<ref>2021-02-12 19:13:07</ref><box><584><0><881><33></box><ref>2021-02-12 19:13:07</ref><box><584><0><881><33></box><ref>2021-02-12 19:13:07</ref><box><584><0><881><33></box><ref>2021-02-12 19:13:07</ref><box><584><0><881><33></box><ref>2021-02-12 19:13:07"
+    },
+    {
+      "wall_ms": 3874.696099985158,
+      "gen_n": 128,
+      "gen_ms": 1323.566,
+      "gen_tok_s": 96.7084376600789,
+      "prompt_n": 1034,
+      "prompt_ms": 2483.577,
+      "text": "<ref>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}
